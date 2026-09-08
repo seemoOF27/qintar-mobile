@@ -1,0 +1,21 @@
+node_modules/
+dist/
+dist-ssr/
+coverage/
+.env
+.env.*
+!.env.example
+*.local
+.DS_Store
+.vscode/
+.idea/
+
+# React Native
+ios/Pods/
+ios/build/
+android/build/
+android/app/build/
+android/.gradle/
+*.keystore
+!debug.keystore
+.expo/
