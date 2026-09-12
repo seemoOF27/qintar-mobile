@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { ApiError } from '@/api/client'
-import { useRegister, useResendCode, useVerifyEmail } from '@/api/hooks/useAuth'
+import { useLogin, useRegister, useResendCode, useVerifyEmail } from '@/api/hooks/useAuth'
 import { useAuth } from '@/context/AuthContext'
 import { Body, Button, Card, Field, Input, Notice, Screen, Title } from '@/components/ui'
 
 /**
- * التسجيل ثم توثيق البريد.
+ * التسجيل ثم توثيق البريد ثم الدخول.
  *
- * **لا رمز دخول قبل التوثيق**: الخادم يرفض ذلك، والشاشة تعكسه بدل أن
- * تفترض دخولًا ثم تفشل.
+ * **ثلاث خطوات لا خطوتان.** توثيق البريد لا يُصدر رمز دخول — الخادم يعيد
+ * المستخدم وحده — فالدخول يقع بعده بكلمة المرور التي كُتبت أصلًا.
  *
  * وقبول سياسة الخصوصية وشروط الاستخدام **صريح ومسجَّل** — لا «بمتابعتك فأنت
  * موافق».
@@ -18,6 +18,7 @@ export function RegisterScreen({ onBack }: { onBack: () => void }) {
   const register = useRegister()
   const verify = useVerifyEmail()
   const resend = useResendCode()
+  const login = useLogin()
 
   const [stage, setStage] = useState<'form' | 'code'>('form')
   const [name, setName] = useState('')
@@ -32,7 +33,9 @@ export function RegisterScreen({ onBack }: { onBack: () => void }) {
       ? register.error
       : verify.error instanceof ApiError
         ? verify.error
-        : null
+        : login.error instanceof ApiError
+          ? login.error
+          : null
 
   if (stage === 'code') {
     return (
@@ -41,7 +44,7 @@ export function RegisterScreen({ onBack }: { onBack: () => void }) {
         <Body muted>أرسلنا كودًا لـ{email}. اكتبه هنا.</Body>
 
         <Card>
-          <Field label="الكود" error={error?.fieldError('code')}>
+          <Field label="الكود" error={error?.fieldError('code') ?? error?.fieldError('email')}>
             <Input
               value={code}
               onChangeText={setCode}
@@ -55,12 +58,20 @@ export function RegisterScreen({ onBack }: { onBack: () => void }) {
 
           <Button
             label="وثّق"
-            busy={verify.isPending}
+            busy={verify.isPending || login.isPending}
             disabled={code.length < 4}
             onPress={() =>
               verify.mutate(
                 { email, code },
-                { onSuccess: (result) => void signIn(result.token) },
+                {
+                  // التوثيق لا يعطي رمزًا، فالدخول يقع بعده بكلمة المرور
+                  // التي كُتبت في الخطوة الأولى.
+                  onSuccess: () =>
+                    login.mutate(
+                      { email, password },
+                      { onSuccess: (result) => void signIn(result.token) },
+                    ),
+                },
               )
             }
           />

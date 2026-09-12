@@ -26,6 +26,12 @@ export function useLogin() {
   })
 }
 
+/**
+ * التسجيل.
+ *
+ * **`accepts_terms` شرط الخادم** لا إضافة اختيارية: القبول الصريح يُسجَّل في
+ * `user_consents` بنوع `service`. والشاشة لا تُفعّل الزر قبل أن يُضغط.
+ */
 export function useRegister() {
   return useMutation({
     mutationFn: async (input: {
@@ -33,14 +39,20 @@ export function useRegister() {
       email: string
       password: string
       password_confirmation: string
-    }) => (await api.post<User>('/auth/register', input)).data,
+    }) => (await api.post<User>('/auth/register', { ...input, accepts_terms: true })).data,
   })
 }
 
+/**
+ * توثيق البريد — **لا يُصدر رمز دخول**.
+ *
+ * الخادم يعيد المستخدم وحده، والدخول خطوة تالية. كان هذا الخطّاف يتوقع
+ * رمزًا فأظهر تدفّقٌ حقيقي أنه لا وجود له، وكان سيُسقط الشاشة عند أول تسجيل.
+ */
 export function useVerifyEmail() {
   return useMutation({
     mutationFn: async (input: { email: string; code: string }) =>
-      (await api.post<LoginResult>('/auth/verify-email', { ...input, device_name: deviceName() })).data,
+      (await api.post<User>('/auth/verify-email', input)).data,
   })
 }
 
