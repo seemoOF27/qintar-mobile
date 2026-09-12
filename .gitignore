@@ -1,7 +1,5 @@
 node_modules/
 dist/
-dist-ssr/
-coverage/
 .env
 .env.*
 !.env.example
@@ -10,12 +8,13 @@ coverage/
 .vscode/
 .idea/
 
-# React Native
-ios/Pods/
-ios/build/
-android/build/
-android/app/build/
-android/.gradle/
+# مولَّد من shared/design-tokens.json عند كل تشغيل — لا يُلزم تتبّعه.
+src/theme.ts
+
+# React Native / Expo
+ios/
+android/
 *.keystore
 !debug.keystore
 .expo/
+expo-env.d.ts

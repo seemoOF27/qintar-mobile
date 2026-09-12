@@ -1,0 +1,15 @@
+{
+  "$comment": "الفئات المعيارية — مصدر الحقيقة الوحيد لمفاتيحها. تغيير مفتاح موجود ممنوع؛ أضِف جديدًا وأهمل القديم.",
+  "schemaVersion": "1.0.0",
+  "categories": [
+    { "key": "fuel",      "label_ar": "محطات الوقود",            "icon": "Fuel",           "order": 1 },
+    { "key": "dining",    "label_ar": "المطاعم والمقاهي",         "icon": "UtensilsCrossed","order": 2 },
+    { "key": "delivery",  "label_ar": "تطبيقات التوصيل",          "icon": "Bike",           "order": 3 },
+    { "key": "grocery",   "label_ar": "السوبرماركت والتموينات",   "icon": "ShoppingCart",   "order": 4 },
+    { "key": "pharmacy",  "label_ar": "الصيدليات والرعاية الطبية","icon": "Pill",           "order": 5 },
+    { "key": "travel",    "label_ar": "السفر والفنادق",           "icon": "Plane",          "order": 6 },
+    { "key": "education", "label_ar": "التعليم",                  "icon": "GraduationCap",  "order": 7 },
+    { "key": "intl",      "label_ar": "المشتريات الدولية",        "icon": "Globe",          "order": 8 },
+    { "key": "other",     "label_ar": "مشتريات أخرى محلية",       "icon": "Wallet",         "order": 9 }
+  ]
+}

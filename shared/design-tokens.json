@@ -1,0 +1,43 @@
+{
+  "$comment": "مصدر الهوية الوحيد عبر الويب والموبايل. ممنوع كتابة Hex في أي مكوّن — القسم 13. القيم محايدة مؤقتة بأسماء نهائية.",
+  "version": "1.0.0",
+  "color": {
+    "brand": {
+      "primary": "#1F6F5C",
+      "primaryMuted": "#2E8570",
+      "accent": "#C8A45C"
+    },
+    "surface": {
+      "page": "#FBFBF9",
+      "raised": "#FFFFFF",
+      "sunken": "#F2F2EE",
+      "border": "#E3E3DC"
+    },
+    "ink": {
+      "strong": "#16211E",
+      "base": "#3C4643",
+      "muted": "#6E7873",
+      "inverse": "#FFFFFF"
+    },
+    "state": {
+      "positive": "#1F6F5C",
+      "warning": "#B0791E",
+      "danger": "#A33A31",
+      "info": "#2C5C8A"
+    }
+  },
+  "space": { "1": "4px", "2": "8px", "3": "12px", "4": "16px", "5": "24px", "6": "32px", "7": "48px" },
+  "radius": { "sm": "8px", "md": "12px", "lg": "18px", "full": "999px" },
+  "fontSize": {
+    "$comment": "لا حجم أقل من 16px في حقول الإدخال — الجوال أولًا",
+    "caption": "13px",
+    "body": "16px",
+    "title": "20px",
+    "display": "28px",
+    "figure": "34px"
+  },
+  "touchTarget": { "min": "44px" },
+  "shadow": {
+    "raised": "0 1px 2px rgba(22,33,30,0.06), 0 4px 12px rgba(22,33,30,0.05)"
+  }
+}

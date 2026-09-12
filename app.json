@@ -1,0 +1,50 @@
+{
+  "expo": {
+    "name": "قنطار",
+    "slug": "qintar",
+    "scheme": "qintar",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FBFBF9",
+    "primaryColor": "#1F6F5C",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1F6F5C"
+    },
+    "ios": {
+      "bundleIdentifier": "com.seemoof27.qintar",
+      "supportsTablet": true,
+      "infoPlist": {
+        "CFBundleDisplayName": "قنطار",
+        "CFBundleDevelopmentRegion": "ar",
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSPhotoLibraryUsageDescription": "لاختيار صورة فاتورة تحلّلها. ما نقرأ صورك ولا نرفع شيئًا بلا اختيارك، والتحليل يحتاج موافقتك المنفصلة."
+      }
+    },
+    "android": {
+      "package": "com.seemoof27.qintar",
+      "adaptiveIcon": {
+        "backgroundColor": "#1F6F5C",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": []
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "لاختيار صورة فاتورة تحلّلها. ما نقرأ صورك ولا نرفع شيئًا بلا اختيارك."
+        }
+      ]
+    ],
+    "extra": {
+      "eas": { "projectId": "" }
+    }
+  }
+}
