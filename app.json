@@ -9,11 +9,6 @@
     "userInterfaceStyle": "light",
     "backgroundColor": "#FBFBF9",
     "primaryColor": "#1F6F5C",
-    "splash": {
-      "image": "./assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#1F6F5C"
-    },
     "ios": {
       "bundleIdentifier": "com.seemoof27.qintar",
       "supportsTablet": true,
@@ -41,10 +36,22 @@
         {
           "photosPermission": "لاختيار صورة فاتورة تحلّلها. ما نقرأ صورك ولا نرفع شيئًا بلا اختيارك."
         }
+      ],
+      "expo-secure-store",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 160,
+          "resizeMode": "contain",
+          "backgroundColor": "#1F6F5C"
+        }
       ]
     ],
     "extra": {
-      "eas": { "projectId": "" }
+      "eas": {
+        "projectId": ""
+      }
     }
   }
 }
