@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { View } from 'react-native'
+import { ContactScreen } from '@/screens/ContactScreen'
 import {
   useAllocations,
   useCards,
@@ -25,9 +27,16 @@ export function MoreScreen() {
   const { data: debts } = useDebts()
   const { data: cards } = useCards()
   const markPaid = useMarkCommitmentPaid()
+  const [showContact, setShowContact] = useState(false)
+
+  if (showContact) {
+    return <ContactScreen onBack={() => setShowContact(false)} />
+  }
 
   return (
     <Screen>
+      <Button label="تواصل معنا" variant="ghost" onPress={() => setShowContact(true)} />
+
       <Title>الالتزامات</Title>
 
       {(commitments ?? []).length === 0 && <EmptyState title="ما عندك التزامات." />}

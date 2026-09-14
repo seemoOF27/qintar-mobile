@@ -13,7 +13,14 @@ import { Body, Button, Card, Field, Input, Notice, Screen, Title } from '@/compo
  * وقبول سياسة الخصوصية وشروط الاستخدام **صريح ومسجَّل** — لا «بمتابعتك فأنت
  * موافق».
  */
-export function RegisterScreen({ onBack }: { onBack: () => void }) {
+export function RegisterScreen({
+  onBack,
+  onReadLegal,
+}: {
+  onBack: () => void
+  /** يفتح النص فعلًا — «قرأت» بلا طريق للقراءة ليست موافقة. */
+  onReadLegal: () => void
+}) {
   const { signIn } = useAuth()
   const register = useRegister()
   const verify = useVerifyEmail()
@@ -118,9 +125,11 @@ export function RegisterScreen({ onBack }: { onBack: () => void }) {
           **قبول صريح لا صندوق مؤشَّر مسبقًا.** يبدأ مطفأً، وبلا ضغطه لا
           يُفعَّل زر الإنشاء — القاعدة الثالثة في CLAUDE.md.
         */}
+        <Button label="اقرأ السياسة والشروط" variant="ghost" onPress={onReadLegal} />
+
         <Button
-          label={accepted ? '✓ قرأت السياسة والشروط وأوافق' : 'اقرأ السياسة والشروط ووافق'}
-          variant="ghost"
+          label={accepted ? '✓ قرأت السياسة والشروط وأوافق' : 'قرأت السياسة والشروط وأوافق'}
+          variant={accepted ? 'primary' : 'ghost'}
           onPress={() => setAccepted((current) => !current)}
         />
 

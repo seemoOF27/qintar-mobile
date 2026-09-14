@@ -236,3 +236,35 @@ describe('الجوال أولًا', () => {
     expect(button).toMatch(/minHeight: theme\.touchMin/)
   })
 })
+
+describe('بوابة السياسة', () => {
+  const gate = () =>
+    codeLines('src/components/PolicyGate.tsx')
+      .map(({ line }) => line)
+      .join('\n')
+
+  /** **لا صندوق مؤشَّر مسبقًا** — القاعدة الثالثة في `CLAUDE.md`. */
+  it('القبول يبدأ غير مؤشَّر، والزر معطَّل قبله', () => {
+    expect(gate()).toMatch(/const \[readAll, setReadAll\] = useState\(false\)/)
+    expect(gate()).toMatch(/disabled=\{!readAll\}/)
+  })
+
+  /** **لا تُحتجز البيانات رهينة**: الخصوصية تُفتح من داخل البوابة. */
+  it('من لا يوافق يصل إلى شاشة الخصوصية', () => {
+    expect(gate()).toMatch(/privacyScreen/)
+    expect(gate()).toMatch(/onOpenPrivacy/)
+  })
+
+  it('التحديث البسيط لا يحجب التطبيق', () => {
+    const source = gate()
+    const minor = source.slice(source.indexOf('policy_update_available'))
+
+    expect(minor).toMatch(/\{children\}/)
+  })
+
+  /** تغيّر السياسة أثناء الجلسة يُعيد جلب الحساب. */
+  it('رفضُ السياسة في منتصف الجلسة يُظهر شاشة القبول', () => {
+    expect(readFileSync('src/api/client.ts', 'utf8')).toMatch(/policyAcceptanceRequired/)
+    expect(readFileSync('src/context/AuthContext.tsx', 'utf8')).toMatch(/onPolicyAcceptanceRequired/)
+  })
+})

@@ -17,6 +17,8 @@ import { MoreScreen } from '@/screens/MoreScreen'
 import { PrivacyScreen } from '@/screens/PrivacyScreen'
 import { LoginScreen } from '@/screens/LoginScreen'
 import { RegisterScreen } from '@/screens/RegisterScreen'
+import { LegalScreen } from '@/screens/LegalScreen'
+import { PolicyGate } from '@/components/PolicyGate'
 import { theme } from '@/theme'
 
 /**
@@ -62,7 +64,7 @@ export default function App() {
 
 function Root() {
   const { status } = useAuth()
-  const [showRegister, setShowRegister] = useState(false)
+  const [anonymousScreen, setAnonymousScreen] = useState<'login' | 'register' | 'legal'>('login')
 
   if (status === 'loading') {
     return (
@@ -73,14 +75,23 @@ function Root() {
   }
 
   if (status === 'anonymous') {
-    return showRegister ? (
-      <RegisterScreen onBack={() => setShowRegister(false)} />
+    if (anonymousScreen === 'legal') {
+      // **بلا تسجيل** — من يُطلب منه القبول يقرأ قبل أن يملك حسابًا.
+      return <LegalScreen onBack={() => setAnonymousScreen('register')} />
+    }
+
+    return anonymousScreen === 'register' ? (
+      <RegisterScreen
+        onBack={() => setAnonymousScreen('login')}
+        onReadLegal={() => setAnonymousScreen('legal')}
+      />
     ) : (
-      <LoginScreen onRegister={() => setShowRegister(true)} />
+      <LoginScreen onRegister={() => setAnonymousScreen('register')} />
     )
   }
 
   return (
+    <PolicyGate privacyScreen={<PrivacyScreen />}>
     <NavigationContainer>
       <Tabs.Navigator
         screenOptions={{
@@ -105,6 +116,7 @@ function Root() {
         <Tabs.Screen name="الخصوصية" component={PrivacyScreen} />
       </Tabs.Navigator>
     </NavigationContainer>
+    </PolicyGate>
   )
 }
 

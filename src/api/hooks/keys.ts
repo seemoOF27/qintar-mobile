@@ -17,6 +17,7 @@ export const keys = {
   debts: (filters: Record<string, unknown> = {}) => ['debts', filters] as const,
   statistics: (params: Record<string, unknown>) => ['statistics', params] as const,
   privacy: ['privacy'] as const,
+  legal: ['legal'] as const,
   consentText: (type: string) => ['consent-text', type] as const,
   parseRequest: (id: number) => ['parse-requests', id] as const,
 }

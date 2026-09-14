@@ -25,6 +25,22 @@ export interface User {
   currency: string
   salary_trigger_method: string | null
   salary_fixed_day: number | null
+  /**
+   * حالة قبول السياسة — **مستويان**.
+   *
+   * `minor_update` تحديث بسيط يُعرض ولا يمس الاستخدام، و`acceptance_required`
+   * تغيير جوهري يوقف كل شيء حتى يقبل.
+   */
+  policy_status: 'current' | 'minor_update' | 'acceptance_required'
+  policy_acceptance_required: boolean
+  policy_update_available: boolean
+}
+
+export interface LegalDocuments {
+  version: string
+  privacy_policy: string
+  terms_of_use: string
+  hash: string
 }
 
 export interface SalaryCycle {
@@ -296,4 +312,20 @@ export interface ImpersonationRequest {
   session_started_at: string | null
   session_ended_at: string | null
   can_be_entered: boolean
+}
+
+/**
+ * محادثة «تواصل معنا».
+ *
+ * `author` «support» لا اسم موظف: المستخدم يحتاج أن يعرف أن الرد من الدعم،
+ * لا من في الفريق كتبه.
+ */
+export interface ContactThread {
+  id: number
+  type: 'issue' | 'suggestion' | 'inquiry'
+  status: 'open' | 'resolved'
+  message: string
+  unread_replies?: number
+  replies?: { id: number; author: 'user' | 'support'; body: string; created_at: string }[]
+  created_at: string
 }

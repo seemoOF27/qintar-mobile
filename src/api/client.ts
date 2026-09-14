@@ -16,6 +16,21 @@ import { config } from '@/config'
 
 const TOKEN_KEY = 'qintar.token'
 
+/**
+ * مستمعو «تغيّرت السياسة أثناء الجلسة».
+ *
+ * الخادم يبدأ برفض كل شيء بـ403، والتطبيق ما زال يحمل مستخدمًا قبل النسخة
+ * القديمة. فأي رفضٍ يحمل العلامة يُخطر `AuthContext` ليعيد جلب الحساب،
+ * فتظهر شاشة القبول بدل سيلٍ من «ممنوع» لا تشرح نفسها.
+ */
+const policyListeners = new Set<() => void>()
+
+export function onPolicyAcceptanceRequired(listener: () => void): () => void {
+  policyListeners.add(listener)
+
+  return () => policyListeners.delete(listener)
+}
+
 export class ApiError extends Error {
   readonly status: number
 
@@ -43,6 +58,11 @@ export class ApiError extends Error {
     const value = this.errors?.fallback
 
     return typeof value === 'string' ? value : null
+  }
+
+  /** تغيّرت السياسة تغييرًا جوهريًّا ولم يقبل بعد. */
+  get policyAcceptanceRequired(): boolean {
+    return this.errors?.policy_acceptance_required === true
   }
 
   fieldError(field: string): string | undefined {
@@ -129,7 +149,13 @@ export async function request<T>(path: string, options: RequestOptions = {}): Pr
   if (!response.ok || envelope.success === false) {
     if (response.status === 401) await setToken(null)
 
-    throw new ApiError(envelope.message ?? 'صار خطأ.', response.status, envelope.errors)
+    const error = new ApiError(envelope.message ?? 'صار خطأ.', response.status, envelope.errors)
+
+    if (error.policyAcceptanceRequired) {
+      for (const listener of policyListeners) listener()
+    }
+
+    throw error
   }
 
   return envelope

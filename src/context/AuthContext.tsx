@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useQueryClient } from '@tanstack/react-query'
-import { api, getToken, setToken } from '@/api/client'
+import { api, getToken, onPolicyAcceptanceRequired, setToken } from '@/api/client'
 import type { User } from '@/api/types'
 
 /**
@@ -52,6 +52,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     void load()
   }, [load])
+
+  // تغيّرت السياسة أثناء الجلسة: يُعاد جلب الحساب فتظهر شاشة القبول.
+  useEffect(() => onPolicyAcceptanceRequired(() => void load()), [load])
 
   const signIn = useCallback(
     async (token: string) => {
