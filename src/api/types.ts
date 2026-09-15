@@ -165,6 +165,8 @@ export interface UserCard {
   bank_name: string
   last_four: string | null
   nickname: string | null
+  canonical_card_slug?: string | null
+  monthly_selection?: string[] | null
 }
 
 export interface Tag {
@@ -327,5 +329,48 @@ export interface ContactThread {
   message: string
   unread_replies?: number
   replies?: { id: number; author: 'user' | 'support'; body: string; created_at: string }[]
+  /** بلا اسم الملف الأصلي — الخادم لا يحفظه */
+  attachments?: { id: number; kind: 'image' | 'pdf'; size_bytes: number }[]
   created_at: string
+}
+
+// ── بطاقتك مقابل صرفك ────────────────────────────────────────────────────
+
+export interface CashbackCatalog {
+  available: boolean
+  cards: import('@/vendor/card-adapter').ContractCard[]
+  categories: { key: string; label_ar: string; order: number }[]
+  schema_version: string | null
+  /** شارة المصدر: «بيانات البطاقات بتاريخ …» */
+  fetched_at: string | null
+  /** شارة التقادم بعد أسبوع، **مع سبب التعذّر** */
+  is_stale: boolean
+  last_attempted_at: string | null
+  last_failure: 'schema_invalid' | 'rate_limited' | 'server_error' | 'unreachable' | null
+}
+
+/** `spend` **أعداد** كما يطلبها العقد والمحرك. وبقية المبالغ نصوص عشرية. */
+export interface CashbackSpend {
+  month: string
+  spend: Record<import('@/vendor/cashback-engine').CategoryId, number>
+  total: Money
+  mapped: Money
+  coverage_percent: number
+  unmapped_budgets: { id: number; name: string; spent: Money }[]
+  uncategorised: Money
+  transaction_count: number
+  card_assigned: Money
+  card_assigned_percent: number
+  card_assigned_count: number
+}
+
+export interface CashbackMappings {
+  categories: { key: string; label_ar: string; order: number }[]
+  budgets: {
+    budget_id: number
+    name: string
+    canonical_category: string | null
+    confidence: number | null
+    suggestion: string | null
+  }[]
 }

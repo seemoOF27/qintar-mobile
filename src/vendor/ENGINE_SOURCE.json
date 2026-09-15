@@ -1,0 +1,13 @@
+{
+  "source": "cards-platform/web/lib",
+  "commit": "2264af5b830bd86b51c3930b5662a0b3b8d2e37d",
+  "copiedAt": "2026-09-13",
+  "note": "منسوخ حرفيًّا حتى يُنشر المحرك حزمةً — docs/requests/0001. لا يُعدَّل هنا.",
+  "files": {
+    "cashback-engine/engine.ts": "43a0ea09d31ef37320f771c476126b69788ed4e4a3a9008f3cde5bc1146702fe",
+    "cashback-engine/ranking.ts": "c7751852f58869613f76b1609c52b3aaa721082a028fc638dc973019ab351ec5",
+    "cashback-engine/types.ts": "16ba7bba4fdcd2b1809ac25c44ce0c996e9c4809961e8944acd11e51c364a7d1",
+    "cashback-engine/index.ts": "c372a95da086582088c7e72ea7dc291a8f9206ecb20d40d4e731e9ecf738e59d",
+    "card-adapter.ts": "9c0a7f0c55bb3bc2a549bc23cc6e17a4c5f526fb3f09d7671d315e55cca12b62"
+  }
+}

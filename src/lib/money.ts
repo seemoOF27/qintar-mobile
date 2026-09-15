@@ -71,3 +71,14 @@ export function formatMoney(amount: Money): string {
 
   return `${negative ? '-' : ''}${whole}.${(value % SCALE).toString().padStart(2, '0')}`
 }
+
+/**
+ * ناتج محرك الكاش باك — **الاستثناء الوحيد** من «المال نصوص».
+ *
+ * المحرك منسوخ من منصة البطاقات ولا يُعدَّل، ويحسب بأعداد. فناتجه يُقرَّب
+ * إلى الهللة **مرة واحدة هنا** ثم يمر بطريق العرض نفسه، ولا يُجمع ناتجان منه
+ * خارجه.
+ */
+export function formatEngineAmount(value: number): string {
+  return formatMoney(toDecimal(BigInt(Math.round(value * 100))))
+}

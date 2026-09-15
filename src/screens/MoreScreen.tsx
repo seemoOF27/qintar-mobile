@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { View } from 'react-native'
+import { CashbackScreen } from '@/screens/CashbackScreen'
 import { ContactScreen } from '@/screens/ContactScreen'
 import {
   useAllocations,
@@ -27,15 +28,20 @@ export function MoreScreen() {
   const { data: debts } = useDebts()
   const { data: cards } = useCards()
   const markPaid = useMarkCommitmentPaid()
-  const [showContact, setShowContact] = useState(false)
+  const [open, setOpen] = useState<'contact' | 'cashback' | null>(null)
 
-  if (showContact) {
-    return <ContactScreen onBack={() => setShowContact(false)} />
+  if (open === 'contact') {
+    return <ContactScreen onBack={() => setOpen(null)} />
+  }
+
+  if (open === 'cashback') {
+    return <CashbackScreen onBack={() => setOpen(null)} />
   }
 
   return (
     <Screen>
-      <Button label="تواصل معنا" variant="ghost" onPress={() => setShowContact(true)} />
+      <Button label="بطاقتك مقابل صرفك" variant="ghost" onPress={() => setOpen('cashback')} />
+      <Button label="تواصل معنا" variant="ghost" onPress={() => setOpen('contact')} />
 
       <Title>الالتزامات</Title>
 
